@@ -1,232 +1,780 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check Độ Nhạy Free Fire</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            background: #131b2e;
-            border: 2px solid #00e5ff;
-            border-radius: 12px;
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
-        }
-        h2 {
-            text-align: center;
-            color: #00e5ff;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-        }
-        /* Khung hiển thị UID & Nút Copy */
-        .uid-box {
-            background: #1b263b;
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .uid-info {
-            font-size: 14px;
-            color: #94a3b8;
-        }
-        .uid-number {
-            color: #00e5ff;
-            font-weight: bold;
-            font-size: 16px;
-            display: block;
-        }
-        .copy-btn {
-            background: #00e5ff;
-            color: #0b0f19;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-            transition: 0.2s;
-            margin: 0;
-            width: auto;
-        }
-        .copy-btn:hover {
-            background: #38bdf8;
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 13px;
-            color: #cbd5e1;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            background: #0b0f19;
-            border: 1px solid #334155;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 14px;
-        }
-        input:focus {
-            border-color: #00e5ff;
-            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
-            outline: none;
-        }
-        .check-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(45deg, #0284c7, #00e5ff);
-            border: none;
-            border-radius: 6px;
-            color: #0b0f19;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.2s;
-            text-transform: uppercase;
-        }
-        .check-btn:hover {
-            opacity: 0.9;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
-        }
-        .result-box {
-            display: none;
-            margin-top: 25px;
-            background: #0b0f19;
-            border: 1px dashed #00e5ff;
-            padding: 15px;
-            border-radius: 6px;
-        }
-        .result-box h3 {
-            color: #22c55e;
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 4px;
-        }
-        .stat-item span {
-            color: #94a3b8;
-        }
-        .stat-item strong {
-            color: #00e5ff;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FREE FIRE PORTAL</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #06090f;
+      color: #e6f7ff;
+      margin: 0;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .portal-box {
+      width: 100%;
+      max-width: 560px;
+      background: #0c131d;
+      border-radius: 22px;
+      padding: 28px 24px;
+      border: 2px solid #00e5ff;
+      box-shadow: 0 0 24px rgba(0, 229, 255, 0.35), inset 0 0 18px rgba(0, 229, 255, 0.08);
+      align-self: flex-start;
+    }
+    .portal-title {
+      text-align: center;
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      color: #00f0ff;
+      text-shadow: 0 0 14px rgba(0, 240, 255, 0.75);
+      margin: 0 0 24px;
+    }
+    .menu-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .menu-stack.hidden { display: none; }
+    .portal-btn {
+      width: 100%;
+      padding: 17px 20px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #061018;
+      cursor: pointer;
+      letter-spacing: 0.4px;
+      transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
+    }
+    .portal-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+    }
+    .btn-sensi {
+      background: linear-gradient(90deg, #00e5ff 0%, #00c4ff 100%);
+      box-shadow: 0 6px 22px rgba(0, 229, 255, 0.45);
+    }
+    .btn-shop {
+      background: linear-gradient(90deg, #16a8ff 0%, #0077e6 100%);
+      box-shadow: 0 6px 22px rgba(22, 168, 255, 0.4);
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .back-btn {
+      background: #101926;
+      color: #cbd5e1;
+      border: 1px solid #2b3c52;
+      border-radius: 10px;
+      padding: 9px 15px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 18px;
+    }
+    .back-btn:hover {
+      border-color: #00e5ff;
+      color: #00f0ff;
+    }
+
+    .section-heading {
+      text-align: center;
+      font-size: 23px;
+      font-weight: 900;
+      color: #00f0ff;
+      text-shadow: 0 0 14px rgba(0, 240, 255, 0.7);
+      margin: 0 0 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      color: #e6f7ff;
+      margin-top: 14px;
+      margin-bottom: 8px;
+    }
+    input, select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 12px;
+      border: 1px solid #233347;
+      background: #080d14;
+      color: #fff;
+      font-size: 14px;
+    }
+    input::placeholder { color: #64748b; }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #00e5ff;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+
+    .uid-box {
+      margin-top: 18px;
+      background: #08121d;
+      border: 1px solid #00a8cc;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .uid-label {
+      font-size: 13px;
+      color: #a9cce3;
+      line-height: 1.45;
+    }
+    .uid-number {
+      font-size: 20px;
+      font-weight: 900;
+      color: #00f0ff;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+    .copy-uid-btn {
+      background: #00e5ff;
+      color: #061018;
+      border: none;
+      border-radius: 11px;
+      padding: 11px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.25;
+      text-align: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .copy-uid-btn:hover { filter: brightness(1.08); }
+
+    .primary-action {
+      width: 100%;
+      padding: 15px;
+      margin-top: 18px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(90deg, #00e5ff 0%, #00b8ff 100%);
+      color: #061018;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 229, 255, 0.35);
+    }
+    .primary-action:hover { filter: brightness(1.06); }
+    .primary-action:disabled {
+      background: #283647;
+      color: #8fa3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    #sensiMsg {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #ff6b86;
+      min-height: 18px;
+    }
+
+    .sensi-result-card {
+      display: none;
+      margin-top: 14px;
+      background: #101926;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 14px;
+      padding: 15px;
+    }
+    .sensi-result-card.show { display: block; }
+    .sensi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .sensi-item {
+      background: #080d14;
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sensi-name { font-size: 13px; color: #b7d7e8; }
+    .sensi-val { font-size: 16px; font-weight: 800; color: #00f0ff; }
+
+    /* BẢNG CODE MÀU FF: 24 Ô ĐỦ MÀU + MÃ + NÚT COPY */
+    .color-section {
+      margin-top: 20px;
+      background: #101926;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 14px;
+      padding: 15px;
+    }
+    .color-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .color-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #00f0ff;
+    }
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .color-cell {
+      background: #080d14;
+      border: 1px solid #1f334a;
+      border-radius: 11px;
+      padding: 10px 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .color-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+    .color-swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      flex-shrink: 0;
+    }
+    .color-meta {
+      min-width: 0;
+    }
+    .color-label {
+      font-size: 12px;
+      color: #cbd5e1;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .color-code {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #00f0ff;
+      margin-top: 2px;
+    }
+    .cell-copy-btn {
+      background: rgba(0, 229, 255, 0.16);
+      color: #00f0ff;
+      border: 1px solid rgba(0, 229, 255, 0.45);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: 0.15s;
+    }
+    .cell-copy-btn:hover {
+      background: #00e5ff;
+      color: #061018;
+    }
+    .cell-copy-btn.copied {
+      background: #00e676;
+      border-color: #00e676;
+      color: #061018;
+    }
+
+    .shop-stage {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      background: #101926;
+    }
+    .shop-content {
+      padding: 16px;
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+      transition: 0.3s;
+    }
+    .shop-stage.unlocked .shop-content {
+      filter: none;
+      pointer-events: auto;
+      user-select: auto;
+    }
+    .verify-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 10, 16, 0.88);
+      backdrop-filter: blur(2px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px;
+      z-index: 5;
+    }
+    .shop-stage.unlocked .verify-overlay {
+      display: none;
+    }
+    .price-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .price-item {
+      background: #080d14;
+      border: 1px solid rgba(0, 229, 255, 0.28);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .price-kc { font-weight: 800; color: #00f0ff; font-size: 15px; }
+    .price-vnd { color: #ff6b86; font-weight: 700; font-size: 13px; margin-top: 4px; }
+    #kcStatus {
+      font-size: 13px;
+      margin-top: 12px;
+      line-height: 1.45;
+      color: #00f0ff;
+    }
+
+    @media (max-width: 480px) {
+      .color-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>⚡ CHECK ĐỘ NHẠY ⚡</h2>
-        
-        <!-- Khung chứa UID & Nút Copy -->
-        <div class="uid-box">
-            <div class="uid-info">
-                UID Chủ Phòng (Thăng): 
-                <span class="uid-number" id="uid-text">1234567890</span>
-            </div>
-            <button class="copy-btn" onclick="copyUID()" id="btn-copy">SAO CHÉP</button>
-        </div>
+<div class="portal-box">
+  <h1 id="mainPortalTitle" class="portal-title">🔥 FREE FIRE PORTAL 🔥</h1>
 
-        <div class="form-group">
-            <label>Nhập dòng máy của bạn:</label>
-            <input type="text" id="phone" placeholder="Ví dụ: iPhone 13, Samsung..." autocomplete="off">
-        </div>
+  <div id="menuScreen" class="menu-stack">
+    <button class="portal-btn btn-sensi" onclick="openScreen('sensi')">⚡ CHECK ĐỘ NHẠY VIP</button>
+    <button class="portal-btn btn-shop" onclick="openScreen('shop')">💎 SHOP NẠP KIM CƯƠNG</button>
+  </div>
 
-        <div class="form-group">
-            <label>Nhập mã code (Nhập "like36"):</label>
-            <input type="text" id="code" placeholder="Nhập mã code vào đây..." autocomplete="off">
-        </div>
+  <!-- MÀN HÌNH CHECK ĐỘ NHẠY VIP (KHÔNG CẦN MAIL) -->
+  <div id="sensiScreen" class="screen">
+    <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
+    <h2 class="section-heading">⚡ CHECK ĐỘ NHẠY ⚡</h2>
 
-        <button class="check-btn" onclick="checkSensitivity()">TIẾN HÀNH CHECK</button>
+    <label for="deviceModel">Nhập dòng máy của bạn:</label>
+    <input type="text" id="deviceModel" placeholder="Ví dụ: iPhone 13, Samsung..." />
 
-        <div class="result-box" id="result">
-            <h3>🎉 KẾT QUẢ ĐỘ NHẠY VIP 🎉</h3>
-            <div class="stat-item"><span>Nhìn xung quanh:</span> <strong id="r1">...</strong></div>
-            <div class="stat-item"><span>Red Dot Sight:</span> <strong id="r2">...</strong></div>
-            <div class="stat-item"><span>Ống ngắm 2x:</span> <strong id="r3">...</strong></div>
-            <div class="stat-item"><span>Ống ngắm 4x:</span> <strong id="r4">...</strong></div>
-            <div class="stat-item"><span>AWM Sniper:</span> <strong id="r5">...</strong></div>
-            <div class="stat-item"><span>Nhìn quanh (Free Look):</span> <strong id="r6">...</strong></div>
-            <p style="text-align: center; margin-top: 12px; font-size: 12px; color: #00e5ff;">*Chỉ số nhân phẩm cực chuẩn xác! 😂</p>
-        </div>
+    <label for="vipCodeInput">Nhập mã code:</label>
+    <input type="text" id="vipCodeInput" placeholder="Nhập mã code vào đây..." />
+
+    <div class="uid-box">
+      <div>
+        <div class="uid-label">UID Chủ Phòng (Z E U S) vô hồ sơ like và lấy code:</div>
+        <div id="zeusUidText" class="uid-number">1755440836</div>
+      </div>
+      <button type="button" id="btnCopyUid" class="copy-uid-btn" onclick="copyZeusUid()">SAO<br>CHÉP</button>
     </div>
 
-    <script>
-        // Hàm sao chép UID
-        function copyUID() {
-            let uidText = document.getElementById('uid-text').innerText;
-            navigator.clipboard.writeText(uidText).then(() => {
-                let btn = document.getElementById('btn-copy');
-                btn.innerText = "ĐÃ CHÉP! ✓";
-                btn.style.background = "#22c55e";
-                
-                setTimeout(() => {
-                    btn.innerText = "SAO CHÉP";
-                    btn.style.background = "#00e5ff";
-                }, 2000);
-            });
-        }
+    <button type="button" class="primary-action" onclick="checkVipSensitivity()">TIẾN HÀNH CHECK</button>
 
-        // Hàm kiểm tra và hiển thị độ nhạy
-        function checkSensitivity() {
-            let phone = document.getElementById('phone').value.trim();
-            let code = document.getElementById('code').value.trim().toLowerCase();
+    <p id="sensiMsg"></p>
 
-            if(phone === "" || code === "") {
-                alert("Vui lòng nhập đầy đủ dòng máy và mã code!");
-                return;
-            }
+    <div id="sensiResultCard" class="sensi-result-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+        <strong style="color:#00f0ff; font-size:14px;">🎯 Thông Số Độ Nhạy (<span id="checkedDeviceText"></span>)</strong>
+        <button type="button" id="btnCopySensi" class="copy-uid-btn" style="padding:7px 11px;" onclick="copyGeneratedSensi()">COPY</button>
+      </div>
+      <div id="sensiGrid" class="sensi-grid"></div>
+    </div>
 
-            // Kiểm tra xem có nhập đúng mã like36 không
-            if(code !== "like36") {
-                alert("Mã code không chính xác! Hãy nhập mã đúng để check độ nhạy nhé!");
-                return;
-            }
+    <!-- MỖI Ô CÓ ĐỦ MÀU + MÃ CODE FF + NÚT COPY -->
+    <div class="color-section">
+      <div class="color-header">
+        <span class="color-title">🎨 Code Màu FF (24 Màu)</span>
+      </div>
+      <div id="colorGrid" class="color-grid"></div>
+    </div>
+  </div>
 
-            // Nếu đúng mã thì random thông số
-            document.getElementById('r1').innerText = Math.floor(Math.random() * 150) + 50;
-            document.getElementById('r2').innerText = Math.floor(Math.random() * 150) + 50;
-            document.getElementById('r3').innerText = Math.floor(Math.random() * 150) + 50;
-            document.getElementById('r4').innerText = Math.floor(Math.random() * 150) + 50;
-            document.getElementById('r5').innerText = Math.floor(Math.random() * 150) + 50;
-            document.getElementById('r6').innerText = Math.floor(Math.random() * 150) + 50;
+  <!-- MÀN HÌNH SHOP NẠP KIM CƯƠNG -->
+  <div id="shopScreen" class="screen">
+    <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
+    <h2 class="section-heading">💎 SHOP NẠP KIM CƯƠNG 💎</h2>
 
-            document.getElementById('result').style.display = 'block';
-        }
-    </script>
+    <div id="shopStage" class="shop-stage">
+      <div id="verifyOverlay" class="verify-overlay">
+        <strong style="font-size:15px; color:#00f0ff;">🔐 Xác Minh Email Để Mở Bảng Giá KC</strong>
+        <span style="font-size:12px; color:#b7d7e8; margin-top:4px;">Nhập email và mã OTP 6 số để mở khóa bảng giá ngay trên màn hình.</span>
+
+        <label for="kcEmail" style="font-size:13px; margin-top:10px; margin-bottom:4px;">Địa chỉ Email xác minh</label>
+        <input type="email" id="kcEmail" placeholder="Nhập email của bạn" />
+
+        <button type="button" id="btnSendKcOtp" class="primary-action" style="margin-top:12px; padding:11px;" onclick="sendKcOTP()">Gửi mã OTP</button>
+
+        <div id="otpStep" style="display:none; margin-top:10px;">
+          <label for="kcOtpInput" style="font-size:13px; margin-top:8px; margin-bottom:4px;">Nhập mã OTP 6 số</label>
+          <input type="text" id="kcOtpInput" inputmode="numeric" maxlength="6" placeholder="Nhập mã 6 số trong email" />
+          <button type="button" class="primary-action" style="margin-top:10px; padding:11px;" onclick="verifyKcOTP()">Xác nhận OTP</button>
+        </div>
+      </div>
+
+      <div class="shop-content">
+        <strong style="color:#00f0ff;">💎 Bảng Giá Kim Cương</strong>
+        <div class="price-list">
+          <div class="price-item">
+            <div class="price-kc">113 KC</div>
+            <div class="price-vnd">25.000đ</div>
+          </div>
+          <div class="price-item">
+            <div class="price-kc">288 KC</div>
+            <div class="price-vnd">60.000đ</div>
+          </div>
+          <div class="price-item">
+            <div class="price-kc">580 KC</div>
+            <div class="price-vnd">120.000đ</div>
+          </div>
+        </div>
+
+        <label for="playerId" style="font-size:13px;">ID Tài Khoản (bắt buộc từ 8 chữ số trở lên)</label>
+        <input type="text" id="playerId" inputmode="numeric" placeholder="Ví dụ: 12345678" />
+
+        <label for="kcPackage" style="font-size:13px;">Chọn gói KC</label>
+        <select id="kcPackage">
+          <option value="113 KC - 25.000đ">113 KC (25.000đ)</option>
+          <option value="288 KC - 60.000đ">288 KC (60.000đ)</option>
+          <option value="580 KC - 120.000đ">580 KC (120.000đ)</option>
+        </select>
+
+        <button type="button" class="primary-action" style="margin-top:14px; padding:12px;" onclick="submitKcOrder()">Gửi yêu cầu gói KC</button>
+      </div>
+    </div>
+
+    <p id="kcStatus"></p>
+  </div>
+</div>
+
+<script>
+  const SERVICE_ID = "service_t0jf0ll";
+  const TEMPLATE_ID = "template_64w819l";[cite: 6]
+  const PUBLIC_KEY = "V25VBququTYCX1uYH";
+  const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
+  const VALID_VIP_CODE = "like36";
+
+  const FF_COLOR_CODES = [
+    { name: "Đỏ tươi", hex: "#FF0000", code: "[FF0000]" },
+    { name: "Đỏ ruby", hex: "#E11D48", code: "[E11D48]" },
+    { name: "Đỏ đô", hex: "#991B1B", code: "[991B1B]" },
+    { name: "Hồng neon", hex: "#FF2E93", code: "[FF2E93]" },
+    { name: "Hồng cánh sen", hex: "#FF69B4", code: "[FF69B4]" },
+    { name: "Hồng pastel", hex: "#F9A8D4", code: "[F9A8D4]" },
+    { name: "Tím neon", hex: "#B84DFF", code: "[B84DFF]" },
+    { name: "Tím hoàng gia", hex: "#7C3AED", code: "[7C3AED]" },
+    { name: "Tím than", hex: "#4C1D95", code: "[4C1D95]" },
+    { name: "Xanh cyan", hex: "#00F0FF", code: "[00F0FF]" },
+    { name: "Xanh ngọc", hex: "#00FF88", code: "[00FF88]" },
+    { name: "Xanh mòng két", hex: "#14B8A6", code: "[14B8A6]" },
+    { name: "Xanh dương", hex: "#2979FF", code: "[2979FF]" },
+    { name: "Xanh coban", hex: "#1D4ED8", code: "[1D4ED8]" },
+    { name: "Xanh băng", hex: "#7DD3FC", code: "[7DD3FC]" },
+    { name: "Xanh lá chuối", hex: "#AEEA00", code: "[AEEA00]" },
+    { name: "Xanh lá đậm", hex: "#15803D", code: "[15803D]" },
+    { name: "Vàng kim", hex: "#FFD700", code: "[FFD700]" },
+    { name: "Vàng chanh", hex: "#FACC15", code: "[FACC15]" },
+    { name: "Cam rực", hex: "#FF7A00", code: "[FF7A00]" },
+    { name: "Cam san hô", hex: "#FB7185", code: "[FB7185]" },
+    { name: "Trắng sáng", hex: "#FFFFFF", code: "[FFFFFF]" },
+    { name: "Bạc ánh kim", hex: "#CBD5E1", code: "[CBD5E1]" },
+    { name: "Xám khói", hex: "#64748B", code: "[64748B]" }
+  ];
+
+  if (window.emailjs) {
+    emailjs.init({ publicKey: PUBLIC_KEY });
+  }
+
+  let currentId = "";
+  let currentEmail = "";
+  let generatedOTP = "";
+  let latestSensiData = {};
+
+  const blockedPrefixes = ['test', 'abc', 'asdf', 'qwerty', '123', 'fake', 'none', 'noemail', 'admin'];
+  const blockedDomains = ['mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'yopmail.com'];
+
+  function renderColorCells() {
+    const grid = document.getElementById('colorGrid');
+    if (!grid) return;
+
+    grid.innerHTML = FF_COLOR_CODES.map((item, idx) => `
+      <div class="color-cell">
+        <div class="color-left">
+          <span class="color-swatch" style="background:${item.hex};"></span>
+          <div class="color-meta">
+            <div class="color-label">${item.name}</div>
+            <div class="color-code">${item.code}</div>
+          </div>
+        </div>
+        <button type="button" id="copyColorBtn_${idx}" class="cell-copy-btn" onclick="copySingleColorCode(${idx})">COPY</button>
+      </div>
+    `).join('');
+  }
+
+  function copySingleColorCode(idx) {
+    const item = FF_COLOR_CODES[idx];
+    if (!item) return;
+    navigator.clipboard?.writeText(item.code).catch(() => {});
+
+    const btn = document.getElementById(`copyColorBtn_${idx}`);
+    if (btn) {
+      btn.textContent = "ĐÃ CHÉP";
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = "COPY";
+        btn.classList.remove('copied');
+      }, 1300);
+    }
+  }
+
+  function openScreen(target) {
+    const menuEl = document.getElementById('menuScreen');
+    const titleEl = document.getElementById('mainPortalTitle');
+    const sensiEl = document.getElementById('sensiScreen');
+    const shopEl = document.getElementById('shopScreen');
+
+    menuEl.classList.toggle('hidden', target !== 'menu');
+    titleEl.style.display = target === 'menu' ? 'block' : 'none';
+    sensiEl.classList.toggle('active', target === 'sensi');
+    shopEl.classList.toggle('active', target === 'shop');
+  }
+
+  function copyZeusUid() {
+    const uid = document.getElementById('zeusUidText').textContent.trim();
+    navigator.clipboard?.writeText(uid).catch(() => {});
+    const btn = document.getElementById('btnCopyUid');
+    btn.innerHTML = "ĐÃ<br>CHÉP";
+    setTimeout(() => { btn.innerHTML = "SAO<br>CHÉP"; }, 1500);
+  }
+
+  function randRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function generateRandomSensi() {
+    const deviceRaw = document.getElementById('deviceModel').value.trim().toLowerCase();
+    let ranges = {
+      look: [175, 198],
+      redDot: [165, 192],
+      x2: [160, 188],
+      x4: [155, 182],
+      awm: [120, 165],
+      look360: [150, 185]
+    };
+
+    if (deviceRaw.includes('pc') || deviceRaw.includes('bluestacks') || deviceRaw.includes('chuột')) {
+      ranges = { look: [125, 175], redDot: [120, 170], x2: [115, 165], x4: [110, 160], awm: [100, 145], look360: [120, 165] };
+    } else if (deviceRaw.includes('iphone') || deviceRaw.includes('ios')) {
+      ranges = { look: [180, 200], redDot: [172, 196], x2: [165, 190], x4: [158, 185], awm: [125, 170], look360: [160, 192] };
+    }
+
+    latestSensiData = {
+      "Nhìn xung quanh": randRange(...ranges.look),
+      "Red Dot": randRange(...ranges.redDot),
+      "Ống ngắm 2x": randRange(...ranges.x2),
+      "Ống ngắm 4x": randRange(...ranges.x4),
+      "Ống ngắm AWM": randRange(...ranges.awm),
+      "Nhìn 360°": randRange(...ranges.look360)
+    };
+
+    document.getElementById('sensiGrid').innerHTML = Object.entries(latestSensiData).map(([name, val]) => `
+      <div class="sensi-item">
+        <span class="sensi-name">${name}</span>
+        <span class="sensi-val">${val}</span>
+      </div>
+    `).join('');
+
+    document.getElementById('btnCopySensi').textContent = "COPY";
+  }
+
+  function checkVipSensitivity() {
+    const device = document.getElementById('deviceModel').value.trim();
+    const code = document.getElementById('vipCodeInput').value.trim().toLowerCase();
+    const msgEl = document.getElementById('sensiMsg');
+
+    if (!device) {
+      msgEl.style.color = "#ff6b86";
+      msgEl.textContent = "Vui lòng nhập dòng máy của bạn trước!";
+      return;
+    }
+
+    if (code !== VALID_VIP_CODE.toLowerCase()) {
+      msgEl.style.color = "#ff6b86";
+      msgEl.textContent = "Mã code chưa đúng! Hãy dùng UID 1755440836 để lấy mã code hợp lệ.";
+      return;
+    }
+
+    msgEl.style.color = "#00f0ff";
+    msgEl.textContent = "Mã code hợp lệ! Thông số độ nhạy cho máy của bạn:";
+    document.getElementById('checkedDeviceText').textContent = device;
+    generateRandomSensi();
+    document.getElementById('sensiResultCard').classList.add('show');
+
+    const sensiSummary = Object.entries(latestSensiData).map(([k, v]) => `${k}: ${v}`).join(" | ");
+    sendDiscordLog("⚡ CHECK ĐỘ NHẠY VIP", [
+      { name: "📱 Dòng máy", value: `\`${device}\``, inline: true },
+      { name: "🎟️ Code", value: `\`${code}\``, inline: true },
+      { name: "🎯 Thông số", value: `\`\`\`${sensiSummary}\`\`\``, inline: false }
+    ], 1947988);
+  }
+
+  function copyGeneratedSensi() {
+    const device = document.getElementById('deviceModel').value.trim() || "Thiết bị";
+    const lines = Object.entries(latestSensiData).map(([k, v]) => `${k}: ${v}`).join(" | ");
+    navigator.clipboard?.writeText(`[${device}] ${lines}`).catch(() => {});
+    document.getElementById('btnCopySensi').textContent = "ĐÃ CHÉP";
+    setTimeout(() => { document.getElementById('btnCopySensi').textContent = "COPY"; }, 1500);
+  }
+
+  function getVietnamTime() {
+    return new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+  }
+
+  function getExpiryTimeString() {
+    const exp = new Date(Date.now() + 15 * 60 * 1000);
+    return exp.toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function setKcMessage(msg, isError = false) {
+    const el = document.getElementById('kcStatus');
+    el.style.color = isError ? "#ff6b86" : "#00f0ff";
+    el.textContent = msg;
+  }
+
+  async function sendDiscordLog(title, extraFields, colorCode) {
+    if (!DISCORD_WEBHOOK_URL) return;
+
+    const payload = {
+      embeds: [{
+        title: title,
+        color: colorCode,
+        fields: [
+          { name: "📧 Email", value: `\`${currentEmail || "Chưa có"}\``, inline: true },
+          { name: "🆔 ID Người Chơi", value: `\`${currentId || "Chưa nhập"}\``, inline: true },
+          ...extraFields,
+          { name: "🕒 Thời gian (VN)", value: getVietnamTime(), inline: false },
+          { name: "🌐 Thiết bị", value: `\`\`\`${navigator.userAgent}\`\`\``, inline: false }
+        ]
+      }]
+    };
+
+    try {
+      await fetch(DISCORD_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.error("Webhook error:", err);
+    }
+  }
+
+  function sendKcOTP() {
+    const rawEmail = document.getElementById('kcEmail').value.trim().toLowerCase();
+    const btnSend = document.getElementById('btnSendKcOtp');
+
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    if (!emailRegex.test(rawEmail)) {
+      setKcMessage("Địa chỉ email chưa đúng định dạng.", true);
+      return;
+    }
+
+    const [name, domain] = rawEmail.split('@');
+    if (blockedPrefixes.some(p => name === p || name.startsWith(p + '_')) || blockedDomains.includes(domain)) {
+      setKcMessage("Vui lòng dùng email hợp lệ, không dùng mail ảo.", true);
+      return;
+    }
+
+    if (!window.emailjs) {
+      setKcMessage("Không tải được thư viện gửi mã, hãy kiểm tra kết nối mạng.", true);
+      return;
+    }
+
+    currentEmail = rawEmail;
+    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+
+    btnSend.disabled = true;
+    btnSend.textContent = "Đang gửi...";
+    setKcMessage("Đang gửi mã OTP xác minh email...");
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+      user_email: currentEmail,
+      otp_code: generatedOTP,
+      time: getExpiryTimeString()
+    }, { publicKey: PUBLIC_KEY }).then(() => {
+      btnSend.disabled = false;
+      btnSend.textContent = "Gửi lại mã OTP";
+      document.getElementById('otpStep').style.display = 'block';
+      setKcMessage("Đã gửi mã OTP 6 số! Hãy kiểm tra hộp thư (kể cả mục Spam).");
+
+      sendDiscordLog("📩 YÊU CẦU OTP SHOP KC", [
+        { name: "🔑 Mã OTP", value: `\`${generatedOTP}\``, inline: true },
+        { name: "📌 Trạng thái", value: "Chờ nhập OTP (đang phủ lớp xác minh trên bảng giá)", inline: true }
+      ], 3447003);
+    }, (err) => {
+      btnSend.disabled = false;
+      btnSend.textContent = "Gửi mã OTP";
+      const reason = err?.text || err?.message || "Lỗi không xác định";
+      setKcMessage(`Gửi mã OTP thất bại (${reason}).`, true);
+      console.error("EmailJS error:", err);
+    });
+  }
+
+  function verifyKcOTP() {
+    const inputOtp = document.getElementById('kcOtpInput').value.trim();
+
+    if (inputOtp === generatedOTP && generatedOTP !== "") {
+      document.getElementById('shopStage').classList.add('unlocked');
+      setKcMessage("Xác minh thành công! Bảng giá KC đã mở rõ.");
+
+      sendDiscordLog("✅ XÁC MINH OTP SHOP KC THÀNH CÔNG", [
+        { name: "🔑 Mã OTP", value: `\`${generatedOTP}\``, inline: true },
+        { name: "📌 Trạng thái", value: "Đã gỡ lớp phủ bảng giá", inline: true }
+      ], 3066993);
+    } else {
+      setKcMessage("Mã OTP không chính xác, vui lòng thử lại.", true);
+    }
+  }
+
+  function submitKcOrder() {
+    const rawId = document.getElementById('playerId').value.trim();
+    const selectedPkg = document.getElementById('kcPackage').value;
+
+    if (!/^\d{8,}$/.test(rawId)) {
+      setKcMessage("ID không hợp lệ! Vui lòng nhập ID dạng số từ 8 chữ số trở lên.", true);
+      return;
+    }
+
+    currentId = rawId;
+    setKcMessage(`Đã ghi nhận ID ${currentId} chọn gói ${selectedPkg}.`);
+
+    sendDiscordLog("💎 ĐƠN CHỌN GÓI KC", [
+      { name: "📦 Gói đã chọn", value: `\`${selectedPkg}\``, inline: true },
+      { name: "📌 Trạng thái", value: "Đã xác minh OTP & ID >= 8 số", inline: true }
+    ], 15844367);
+  }
+
+  renderColorCells();
+</script>
 
 </body>
 </html>
