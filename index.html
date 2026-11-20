@@ -66,6 +66,10 @@
       background: linear-gradient(90deg, #16a8ff 0%, #0077e6 100%);
       box-shadow: 0 6px 22px rgba(22, 168, 255, 0.4);
     }
+    .btn-color {
+      background: linear-gradient(90deg, #00f5d4 0%, #00bbf9 100%);
+      box-shadow: 0 6px 22px rgba(0, 245, 212, 0.35);
+    }
 
     .screen { display: none; }
     .screen.active { display: block; }
@@ -213,25 +217,7 @@
     .sensi-name { font-size: 13px; color: #b7d7e8; }
     .sensi-val { font-size: 16px; font-weight: 800; color: #00f0ff; }
 
-    /* BẢNG CODE MÀU FF: 24 Ô ĐỦ MÀU + MÃ + NÚT COPY */
-    .color-section {
-      margin-top: 20px;
-      background: #101926;
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      border-radius: 14px;
-      padding: 15px;
-    }
-    .color-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .color-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: #00f0ff;
-    }
+    /* MỤC RIÊNG CODE MÀU FF: 24 Ô ĐỦ MÀU + MÃ + NÚT COPY */
     .color-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -367,9 +353,10 @@
   <div id="menuScreen" class="menu-stack">
     <button class="portal-btn btn-sensi" onclick="openScreen('sensi')">⚡ CHECK ĐỘ NHẠY VIP</button>
     <button class="portal-btn btn-shop" onclick="openScreen('shop')">💎 SHOP NẠP KIM CƯƠNG</button>
+    <button class="portal-btn btn-color" onclick="openScreen('color')">🎨 CODE MÀU FF</button>
   </div>
 
-  <!-- MÀN HÌNH CHECK ĐỘ NHẠY VIP (KHÔNG CẦN MAIL) -->
+  <!-- MỤC 1: CHECK ĐỘ NHẠY VIP (KHÔNG CẦN MAIL) -->
   <div id="sensiScreen" class="screen">
     <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
     <h2 class="section-heading">⚡ CHECK ĐỘ NHẠY ⚡</h2>
@@ -399,17 +386,9 @@
       </div>
       <div id="sensiGrid" class="sensi-grid"></div>
     </div>
-
-    <!-- MỖI Ô CÓ ĐỦ MÀU + MÃ CODE FF + NÚT COPY -->
-    <div class="color-section">
-      <div class="color-header">
-        <span class="color-title">🎨 Code Màu FF (24 Màu)</span>
-      </div>
-      <div id="colorGrid" class="color-grid"></div>
-    </div>
   </div>
 
-  <!-- MÀN HÌNH SHOP NẠP KIM CƯƠNG -->
+  <!-- MỤC 2: SHOP NẠP KIM CƯƠNG -->
   <div id="shopScreen" class="screen">
     <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
     <h2 class="section-heading">💎 SHOP NẠP KIM CƯƠNG 💎</h2>
@@ -464,11 +443,18 @@
 
     <p id="kcStatus"></p>
   </div>
+
+  <!-- MỤC 3: MỤC RIÊNG CODE MÀU FF -->
+  <div id="colorScreen" class="screen">
+    <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
+    <h2 class="section-heading">🎨 CODE MÀU FF 🎨</h2>
+    <div id="colorGrid" class="color-grid"></div>
+  </div>
 </div>
 
 <script>
   const SERVICE_ID = "service_t0jf0ll";
-  const TEMPLATE_ID = "template_64w819l";[cite: 6]
+  const TEMPLATE_ID = "template_64w819l";
   const PUBLIC_KEY = "V25VBququTYCX1uYH";
   const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
   const VALID_VIP_CODE = "like36";
@@ -551,11 +537,13 @@
     const titleEl = document.getElementById('mainPortalTitle');
     const sensiEl = document.getElementById('sensiScreen');
     const shopEl = document.getElementById('shopScreen');
+    const colorEl = document.getElementById('colorScreen');
 
     menuEl.classList.toggle('hidden', target !== 'menu');
     titleEl.style.display = target === 'menu' ? 'block' : 'none';
     sensiEl.classList.toggle('active', target === 'sensi');
     shopEl.classList.toggle('active', target === 'shop');
+    colorEl.classList.toggle('active', target === 'color');
   }
 
   function copyZeusUid() {
