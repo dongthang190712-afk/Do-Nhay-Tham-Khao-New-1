@@ -121,7 +121,6 @@
     }
     .menu-stack.hidden { display: none; }
 
-    /* Tất cả 4 nút menu chính cùng 1 tông cyan/xanh băng đồng bộ */
     .portal-btn {
       width: 100%;
       padding: 17px 20px;
@@ -1453,13 +1452,19 @@
     if (!item) return;
     copyToClipboard(item.code).then(() => {
       const btn = document.getElementById(`copyColorBtn_${idx}`);
-      if (!btn) return;
-      btn.textContent = "ĐÃ CHÉP";
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = "COPY";
-        btn.classList.remove('copied');
-      }, 1100);
+      if (btn) {
+        btn.textContent = "ĐÃ CHÉP";
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = "COPY";
+          btn.classList.remove('copied');
+        }, 1100);
+      }
+
+      sendDiscordNotify("🎨 Copy Mã Màu FF", [
+        { name: "Tên màu", value: item.name, inline: true },
+        { name: "Mã code", value: item.code, inline: true }
+      ]);
     });
   }
 
